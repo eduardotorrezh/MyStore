@@ -7,3 +7,8 @@ public/storage
 public/hot 
 storage/*.key 
 .env
+/vendor
+.env
+/public/.htaccess
+/storage
+storage/*.key
