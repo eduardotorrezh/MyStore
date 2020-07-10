@@ -33,6 +33,7 @@ Route::post('wl-products','WishListController@show');
 //Cosas referentes a la SC
 Route::post('add-to-sc','ProductsInShoppingCartController@store');
 Route::delete('del-to-sc','ProductsInShoppingCartController@destroy');
+Route::put('upt-to-sc','ProductsInShoppingCartController@update');
 
 
 //Cosas relacionadas con productos

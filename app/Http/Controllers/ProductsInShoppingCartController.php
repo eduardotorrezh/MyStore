@@ -49,6 +49,26 @@ class ProductsInShoppingCartController extends Controller
         
     }
 
+    public function update(Request $request)
+    {
+        $user_id =  $request->user_id;
+        $order = ShoppingCart::where('user_id','=', $user_id)->where('status', 1)->get();
+        $sc_id = $order[0]->id;
+        $pisc = ProductsInShoppingCart::where('shopping_cart_id','=', $sc_id)->where('product_id', $request->product_id)->get();
+        $pisc = $pisc[0];
+        $pr  = Product::find($request->product_id);
+        
+        //$pisc = Product
+        if($pisc->quantity != $request->quantity){
+            $pisc->quantity = $request->quantity;
+            $pisc->subtotal = $request->quantity * $pr->final_price;
+            if($pisc->save()){
+                return 200;
+            }else{
+                return "Algo salió mal";
+            }
+        }
+    }
   
     public function destroy(Request $request)
     {
@@ -57,7 +77,7 @@ class ProductsInShoppingCartController extends Controller
         $sc_id = $order[0]->id;
         $prod_id = $request->product_id;
         
-        if(ProductsInWishList::where('shopping_cart_id', $sc_id)
+        if(ProductsInShoppingCart::where('shopping_cart_id', $sc_id)
         ->where('product_id', $prod_id)->delete()){
             return 200;
         }else{
