@@ -34,6 +34,7 @@ Route::post('wl-products','WishListController@show');
 Route::post('add-to-sc','ProductsInShoppingCartController@store');
 Route::delete('del-to-sc','ProductsInShoppingCartController@destroy');
 Route::put('upt-to-sc','ProductsInShoppingCartController@update');
+Route::post('prods-of-sc','ShoppingCartController@show');
 
 
 //Cosas relacionadas con productos
