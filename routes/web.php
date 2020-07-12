@@ -23,6 +23,7 @@ Auth::routes();
 Route::resource('user-config', 'UsersController',['only' => ['index', 'destroy','update']]); /* Falta borrar el intento cuando no se tiene toda la user info  */
 Route::resource('address', 'AddressController',['only' => ['index', 'store','show','update','destroy']]);
 Route::post('/rols', 'RolController@store');
+Route::get('auth_user','UsersController@auth_user');
 
 //Cosas referentes a la WL
 Route::post('add-to-wl','ProductsInWishListController@store');
