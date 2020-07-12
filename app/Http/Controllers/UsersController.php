@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\InfoUser;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -29,6 +30,19 @@ class UsersController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function auth_user(){
+        $user = Auth::user();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],404);
+        }
+        return response()->json([
+            $user
+        ],200);
     }
 
     /**
