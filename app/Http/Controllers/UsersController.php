@@ -40,6 +40,15 @@ class UsersController extends Controller
                 'message' => 'No se encontro usuario logeado'
             ],404);
         }
+
+        $user = $user->where('status','=',true)->first();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
         return response()->json([
             $user
         ],200);
