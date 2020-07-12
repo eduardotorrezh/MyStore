@@ -29,7 +29,19 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+
+        // $user = User::where('status','=',true)->where('id','=',$id)->first();
+
+        // if(!$user){
+        //     return response()->json([
+        //         'message' => 'No se encontro usuario o ha sido eliminado'
+        //     ],404);
+        // }
+
+        // return response()->json([
+        //     $user
+        // ],200);
+
     }
 
     public function auth_user(){
