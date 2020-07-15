@@ -16,8 +16,8 @@ class AddressController extends Controller
      */
     public function index(Request $request)
     {
-        $id = $request->user_id;
-        $user = User::where('id','=',$id)->where('status','=',true)->first();
+        $user_id = $request->user_id;
+        $user = User::where('id','=',$user_id)->where('status','=',true)->first();
 
        
         if(!$user){
@@ -30,7 +30,7 @@ class AddressController extends Controller
 
         if(!$address){
             return response()->json([
-                'message' => 'Lo sentimos, no se encontro dirección'
+                'message' => 'Lo sentimos, no hay direcciónes'
             ],404);
         }
 
@@ -64,8 +64,8 @@ class AddressController extends Controller
         // }else{
         //     return 'Algo salió mal';
         // }
-        $id = $request->user_id;
-        $user = User::where('id','=',$id)->where('status','=',true)->first();
+        $user_id = $request->user_id;
+        $user = User::where('id','=',$user_id)->where('status','=',true)->first();
 
        
         if(!$user){
@@ -80,13 +80,13 @@ class AddressController extends Controller
             'street2' =>  $request->street2,
             'indications' =>  $request->indications,
             'contactphone' =>  $request->contactphone,
-            'user_id' => $id,
+            'user_id' => $user_id,
         ];
 
         if(Address::create($address)){
             return response()->json([
                 'message' => 'Dirección guardada exitosamente',
-                'address' => $address //solo funciona con una dirección
+                'address' => $address 
             ],201);
         }else{
             return response()->json([
@@ -163,8 +163,8 @@ class AddressController extends Controller
         //     return 'Algo salió mal';
         // }
 
-        $id = $request->user_id;
-        $user = User::where('id','=',$id)->where('status','=',true)->first();
+        $user_id = $request->user_id;
+        $user = User::where('id','=',$user_id)->where('status','=',true)->first();
 
         if(!$user){
             return response()->json([
@@ -219,8 +219,8 @@ class AddressController extends Controller
         // Address::destroy($id);
         // return 'Borrado';
 
-        $id = $request->user_id;
-        $user = User::where('id','=',$id)->where('status','=',true)->first();
+        $user_id = $request->user_id;
+        $user = User::where('id','=',$user_id)->where('status','=',true)->first();
 
         if(!$user){
             return response()->json([
