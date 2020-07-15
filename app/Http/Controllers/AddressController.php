@@ -194,7 +194,7 @@ class AddressController extends Controller
         $address -> street2 =  $request->street2;
         $address -> indications =  $request->indications;
         $address -> contactphone =  $request->contactphone;
-        $address -> user_id = $id;
+        $address -> user_id = $user_id;
 
         if($address->save()){
             return response()->json([
