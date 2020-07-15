@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Address;
+use App\User;
 use Illuminate\Http\Request;
 
 class AddressController extends Controller
@@ -13,9 +14,27 @@ class AddressController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $id = $request->user_id;
+        $user = User::where('id','=',$id)->where('status','=',true)->first();
+
+       
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $address = $user->address()->get();
+
+        if(!$address){
+            return response()->json([
+                'message' => 'Lo sentimos, no se encontro dirección'
+            ],404);
+        }
+
+        return $address;
     }
 
     /**
@@ -45,17 +64,10 @@ class AddressController extends Controller
         // }else{
         //     return 'Algo salió mal';
         // }
-        
-        $user = Auth::user();
+        $id = $request->user_id;
+        $user = User::where('id','=',$id)->where('status','=',true)->first();
 
-        if(!$user){
-            return response()->json([
-                'message' => 'No se encontro usuario logeado'
-            ],404);
-        }
-
-        $id = $user->where('status','=',true)->first()->id;
-
+       
         if(!$user){
             return response()->json([
                 'message' => 'No se encontro usuario o ha sido eliminado'
@@ -63,14 +75,18 @@ class AddressController extends Controller
         }
 
         $address=[
-            'address' => Hash::make($request->address),
+            'address' => $request->address,
+            'street1' => $request->street1,
+            'street2' =>  $request->street2,
+            'indications' =>  $request->indications,
+            'contactphone' =>  $request->contactphone,
             'user_id' => $id,
         ];
 
         if(Address::create($address)){
             return response()->json([
                 'message' => 'Dirección guardada exitosamente',
-                'address' => $address
+                'address' => $address //solo funciona con una dirección
             ],201);
         }else{
             return response()->json([
@@ -85,12 +101,13 @@ class AddressController extends Controller
      * @param  \App\Address  $address
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request,$id)
     {
         // $address = Address::where('user_id','=', $user_id)->get();
         // return  $address; 
 
-        $user = Auth::user();
+        $user_id = $request->user_id;
+        $user = User::where('id','=',$user_id)->where('status','=',true)->first();
 
         if(!$user){
             return response()->json([
@@ -146,7 +163,8 @@ class AddressController extends Controller
         //     return 'Algo salió mal';
         // }
 
-        $user = Auth::user();
+        $id = $request->user_id;
+        $user = User::where('id','=',$id)->where('status','=',true)->first();
 
         if(!$user){
             return response()->json([
@@ -171,7 +189,12 @@ class AddressController extends Controller
             ],404);
         }
 
-        $address -> address = Hash::make($request->address);
+        $address -> address = $request->address;
+        $address -> street1 = $request->street1;
+        $address -> street2 =  $request->street2;
+        $address -> indications =  $request->indications;
+        $address -> contactphone =  $request->contactphone;
+        $address -> user_id = $id;
 
         if($address->save()){
             return response()->json([
@@ -191,12 +214,13 @@ class AddressController extends Controller
      * @param  \App\Address  $address
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id )
+    public function destroy(Request $request,$id )
     {
         // Address::destroy($id);
         // return 'Borrado';
 
-        $user = Auth::user();
+        $id = $request->user_id;
+        $user = User::where('id','=',$id)->where('status','=',true)->first();
 
         if(!$user){
             return response()->json([
