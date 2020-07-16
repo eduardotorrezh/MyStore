@@ -35,7 +35,7 @@ class PassportController extends Controller
                 ],404);
             }
 
-            $token = $user->createToken('')->accessToken;
+            $token = $user->createToken('users')->accessToken;
             return response()->json(['success' => true, 'token' => $token],
             200);
         } else
