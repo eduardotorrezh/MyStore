@@ -111,9 +111,13 @@ trait AuthenticatesUsers
             return $response;
         }
 
-        return $request->wantsJson()
-                    ? new Response('', 204)
-                    : redirect()->intended($this->redirectPath());
+        return [
+            "id"=>$this->guard()->user()->id,
+            "name"=>$this->guard()->user()->name,
+            "last_name"=>$this->guard()->user()->last_name,
+        ];  //Aquí está la magia, pasamos el id, nombre y apellido.
+        
+        //$this->guard()->user()->id; //Aquí le pasamos el ID
     }
 
     /**
