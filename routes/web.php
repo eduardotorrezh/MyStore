@@ -24,6 +24,7 @@ Route::resource('user-config', 'UsersController',['only' => ['index', 'destroy',
 Route::resource('address', 'AddressController',['only' => ['index', 'store','show','update','destroy']]);
 Route::post('/rols', 'RolController@store');
 Route::get('auth_user','UsersController@auth_user');
+Route::post('user-inf','UsersController@show');
 
 //Cosas referentes a la WL
 Route::post('add-to-wl','ProductsInWishListController@store');

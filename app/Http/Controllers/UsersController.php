@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\InfoUser;
+use App\Http\Resources\UsersViewCollection;
 use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
@@ -27,20 +28,27 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
+        $user = User::where('status','=',true)->where('id','=',$request->id)->first();
+        
 
-        // $user = User::where('status','=',true)->where('id','=',$id)->first();
-
-        // if(!$user){
-        //     return response()->json([
-        //         'message' => 'No se encontro usuario o ha sido eliminado'
-        //     ],404);
-        // }
-
-        // return response()->json([
-        //     $user
-        // ],200);
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+        $inf = InfoUser::where('user_id','=',$request->id)->first();
+        // return $user;
+         return response()->json([
+             'name'=>$user->name,
+             'last_name'=>$user->last_name,
+             'email'=>$user->email,
+             'last_login'=>$user->last_login,
+             'birthday'=>$inf->birthday,
+             'genre'=>$inf->genre,
+             'phone'=>$inf->phone
+        ],200);
 
     }
 
