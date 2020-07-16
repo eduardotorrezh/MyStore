@@ -16,11 +16,17 @@ class AddressController extends Controller
      */
     public function index(Request $request)
     {
-        $user_id = $request->user_id;
-        $user = User::where('id','=',$user_id)->where('status','=',true)->first();
+        $user = Auth::user();
 
-       
         if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],401);
+        }
+
+        $status = $user->status;
+
+        if(!$status){
             return response()->json([
                 'message' => 'No se encontro usuario o ha sido eliminado'
             ],404);
@@ -30,7 +36,7 @@ class AddressController extends Controller
 
         if(!$address){
             return response()->json([
-                'message' => 'Lo sentimos, no hay direcciónes'
+                'message' => 'Lo sentimos, no hay direcciones'
             ],404);
         }
 
@@ -55,20 +61,18 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        // $address=[
-        //     'address' => $request->address,
-        //     'user_id' => $request->user_id,
-        // ];
-        // if(Address::create($address)){
-        //     return 200;
-        // }else{
-        //     return 'Algo salió mal';
-        // }
-        $user_id = $request->user_id;
-        $user = User::where('id','=',$user_id)->where('status','=',true)->first();
+        $user = Auth::user();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],401);
+        }
 
        
-        if(!$user){
+        $status = $user->status;
+
+        if(!$status){
             return response()->json([
                 'message' => 'No se encontro usuario o ha sido eliminado'
             ],404);
@@ -80,12 +84,12 @@ class AddressController extends Controller
             'street2' =>  $request->street2,
             'indications' =>  $request->indications,
             'contactphone' =>  $request->contactphone,
-            'user_id' => $user_id,
+            'user_id' => $user->id,
         ];
 
         if(Address::create($address)){
             return response()->json([
-                'message' => 'Dirección guardada exitosamente',
+                'message' => 'Direccion guardada exitosamente',
                 'address' => $address 
             ],201);
         }else{
@@ -103,22 +107,18 @@ class AddressController extends Controller
      */
     public function show(Request $request,$id)
     {
-        // $address = Address::where('user_id','=', $user_id)->get();
-        // return  $address; 
 
-        $user_id = $request->user_id;
-        $user = User::where('id','=',$user_id)->where('status','=',true)->first();
+        $user = Auth::user();
 
         if(!$user){
             return response()->json([
                 'message' => 'No se encontro usuario logeado'
-            ],404);
+            ],401);
         }
 
+        $status = $user->status;
 
-        $user = $user->where('status','=',true)->first();
-
-        if(!$user){
+        if(!$status){
             return response()->json([
                 'message' => 'No se encontro usuario o ha sido eliminado'
             ],404);
@@ -128,7 +128,7 @@ class AddressController extends Controller
 
         if(!$address){
             return response()->json([
-                'message' => 'Lo sentimos, no se encontro dirección'
+                'message' => 'Lo sentimos, no se encontro direccion'
             ],404);
         }
 
@@ -155,27 +155,19 @@ class AddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $address =  Address::find($id);
-        // $address -> address = $request -> address;
-        // if($address->save()){
-        //     return 200;
-        // }else{
-        //     return 'Algo salió mal';
-        // }
 
-        $user_id = $request->user_id;
-        $user = User::where('id','=',$user_id)->where('status','=',true)->first();
+        $user = Auth::user();
 
         if(!$user){
             return response()->json([
                 'message' => 'No se encontro usuario logeado'
-            ],404);
+            ],401);
         }
 
 
-        $user = $user->where('status','=',true)->first();
+        $status = $user->status;
 
-        if(!$user){
+        if(!$status){
             return response()->json([
                 'message' => 'No se encontro usuario o ha sido eliminado'
             ],404);
@@ -185,7 +177,7 @@ class AddressController extends Controller
 
         if(!$address){
             return response()->json([
-                'message' => 'Lo sentimos, no se encontro dirección'
+                'message' => 'Lo sentimos, no se encontro direccion'
             ],404);
         }
 
@@ -194,11 +186,10 @@ class AddressController extends Controller
         $address -> street2 =  $request->street2;
         $address -> indications =  $request->indications;
         $address -> contactphone =  $request->contactphone;
-        $address -> user_id = $user_id;
 
         if($address->save()){
             return response()->json([
-                'message' => 'Dirección actualizada exitosamente',
+                'message' => 'Direccion actualizada exitosamente',
                 'address' => $address
             ],200);
         }else{
@@ -216,22 +207,18 @@ class AddressController extends Controller
      */
     public function destroy(Request $request,$id )
     {
-        // Address::destroy($id);
-        // return 'Borrado';
-
-        $user_id = $request->user_id;
-        $user = User::where('id','=',$user_id)->where('status','=',true)->first();
+        $user = Auth::user();
 
         if(!$user){
             return response()->json([
                 'message' => 'No se encontro usuario logeado'
-            ],404);
+            ],401);
         }
 
 
-        $user = $user->where('status','=',true)->first();
+        $status = $user->status;
 
-        if(!$user){
+        if(!$status){
             return response()->json([
                 'message' => 'No se encontro usuario o ha sido eliminado'
             ],404);
@@ -241,14 +228,14 @@ class AddressController extends Controller
 
         if(!$address){  
             return response()->json([
-                'message' => 'Lo sentimos, no se encontro dirección'
+                'message' => 'Lo sentimos, no se encontro direccion'
             ],404);
         }
         
 
         if($address->delete()){
             return response()->json([
-                'message' => 'Dirección eliminada exitosamente'
+                'message' => 'Direccion eliminada exitosamente'
             ],200);
         }else{
             return response()->json([
