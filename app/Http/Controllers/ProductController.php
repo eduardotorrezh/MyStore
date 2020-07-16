@@ -59,9 +59,15 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show($slug_id)
     {
-        $product = Product::where('slug','=', $slug)->get();
+        $product = Product::where('slug','=', $slug_id)->orWhere('id', '=', $slug_id)->first();
+
+        if(!$product){  
+            return response()->json([
+                'message' => 'Lo sentimos, no se encontro el producto'
+            ],404);
+        }
         return  $product;
     }
 
