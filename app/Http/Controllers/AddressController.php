@@ -78,8 +78,6 @@ class AddressController extends Controller
             ],404);
         }
 
-       
-
         $address=[
             'address' => $request->address,
             'street1' => $request->street1,
@@ -109,8 +107,6 @@ class AddressController extends Controller
      */
     public function show(Request $request,$id)
     {
-        // $address = Address::where('user_id','=', $user_id)->get();
-        // return  $address; 
 
         $user = Auth::user();
 
@@ -159,13 +155,6 @@ class AddressController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // $address =  Address::find($id);
-        // $address -> address = $request -> address;
-        // if($address->save()){
-        //     return 200;
-        // }else{
-        //     return 'Algo salió mal';
-        // }
 
         $user = Auth::user();
 
@@ -218,9 +207,6 @@ class AddressController extends Controller
      */
     public function destroy(Request $request,$id )
     {
-        // Address::destroy($id);
-        // return 'Borrado';
-
         $user = Auth::user();
 
         if(!$user){
