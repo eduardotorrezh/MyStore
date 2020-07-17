@@ -14,7 +14,7 @@ class BuyAndSellController extends Controller
      */
     public function index()
     {
-        //
+        return BuyAndSell::all();
     }
 
     /**
