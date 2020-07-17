@@ -19,11 +19,26 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 //Cosas referentes al usuario
-Auth::routes();
+Auth::routes(['login'=>false,'logout'=>false]); //Register
+Route::post('login', 'PassportController@login');
+
+//TOKENS PASSPORT
+Route::group(['middleware'=>'auth:api'], function(){
+    #Usuarios
+    Route::get('auth_user','UsersController@auth_user');
+    Route::post('logout', 'PassportController@logout'); //elimina todos los tokens
+
+    #Direcciones
+    Route::ApiResource('address', 'AddressController');
+    
+});
+
 Route::resource('user-config', 'UsersController',['only' => ['index', 'destroy','update']]); /* Falta borrar el intento cuando no se tiene toda la user info  */
-Route::resource('address', 'AddressController',['only' => ['index', 'store','show','update','destroy']]);
+#Route::resource('address', 'AddressController',['only' => ['index', 'store','show','update','destroy']]);
 Route::post('/rols', 'RolController@store');
-Route::get('auth_user','UsersController@auth_user');
+#Route::get('auth_user','UsersController@auth_user');
+#Route::post('login','UsersController@login');
+#Route::post('logout','UsersController@logout');
 Route::post('user-inf','UsersController@show');
 
 //Cosas referentes a la WL

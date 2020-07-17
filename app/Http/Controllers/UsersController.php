@@ -61,9 +61,9 @@ class UsersController extends Controller
             ],404);
         }
 
-        $user = $user->where('status','=',true)->first();
+        $status = $user->status;
 
-        if(!$user){
+        if(!$status){
             return response()->json([
                 'message' => 'No se encontro usuario o ha sido eliminado'
             ],404);
