@@ -52,6 +52,7 @@ Route::post('add-to-sc','ProductsInShoppingCartController@store');
 Route::delete('del-to-sc','ProductsInShoppingCartController@destroy');
 Route::put('upt-to-sc','ProductsInShoppingCartController@update');
 Route::post('prods-of-sc','ShoppingCartController@show');
+Route::post('pay-sc','ShoppingCartController@pay_sc');
 
 
 //Cosas relacionadas con productos
@@ -59,3 +60,5 @@ Route::resource('categories', 'CategoryController',['only' => ['index', 'store',
 Route::resource('products', 'ProductController',['only' => ['index', 'store','show','update','destroy']]);
 
 
+//BuyAndSells
+Route::get("all-payments","BuyAndSellController@index");
