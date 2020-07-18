@@ -6,6 +6,7 @@ use App\ProductsInShoppingCart;
 use App\Product;
 use App\ShoppingCart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductsInShoppingCartController extends Controller
 {
@@ -24,7 +25,23 @@ class ProductsInShoppingCartController extends Controller
 
     public function store(Request $request)
     {
-        $user_id =  $request->user_id;
+        $user = Auth::user();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],401);
+        }
+
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $user_id =  $user->id;
         $order = ShoppingCart::where('user_id','=', $user_id)->get();
         $sc_id = $order[0]->id;
         $prod = Product::find($request->product_id);
@@ -51,7 +68,23 @@ class ProductsInShoppingCartController extends Controller
 
     public function update(Request $request)
     {
-        $user_id =  $request->user_id;
+        $user = Auth::user();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],401);
+        }
+
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $user_id =  $user->id;
         $order = ShoppingCart::where('user_id','=', $user_id)->where('status', 1)->get();
         $sc_id = $order[0]->id;
         $pisc = ProductsInShoppingCart::where('shopping_cart_id','=', $sc_id)->where('product_id', $request->product_id)->get();
@@ -72,7 +105,23 @@ class ProductsInShoppingCartController extends Controller
   
     public function destroy(Request $request)
     {
-        $user_id =  $request->user_id;
+        $user = Auth::user();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],401);
+        }
+
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $user_id =  $user->id;
         $order = ShoppingCart::where('user_id','=', $user_id)->get();
         $sc_id = $order[0]->id;
         $prod_id = $request->product_id;

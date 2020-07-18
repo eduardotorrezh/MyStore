@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -35,6 +36,24 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();   
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $name_rol = $user->rol()->first()->name;
+        
+
+        if($name_rol == 'Client'){
+            return response()->json([
+                'message' => 'No tienes acceso a este modulo'
+            ],404);
+        }
+
         $category = [
             'name' => $request->name,
         ];
@@ -77,6 +96,23 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = Auth::user();   
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $name_rol = $user->rol()->first()->name;
+        
+
+        if($name_rol == 'Client'){
+            return response()->json([
+                'message' => 'No tienes acceso a este modulo'
+            ],404);
+        }
     
         $category =  Category::find($id);
         $category -> name = $request -> name;
@@ -95,6 +131,25 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        $user = Auth::user();   
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $name_rol = $user->rol()->first()->name;
+        
+
+        if($name_rol == 'Client'){
+            return response()->json([
+                'message' => 'No tienes acceso a este modulo'
+            ],404);
+        }
+
+        #Falta retornar excepciones
         Category::destroy($id);
         return 'Borrado';
     }
