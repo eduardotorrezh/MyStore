@@ -10,7 +10,6 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 class PassportController extends Controller
 {
-
     public $maxAttempts=3;
     public $decayMinutes=2;
 
@@ -18,16 +17,36 @@ class PassportController extends Controller
 
     public function login(Request $request)
     {
-        if ($this->hasTooManyLoginAttempts($request)) {
-            Log::alert('Se ha alcanzado el límite de intentos máximos que son: '.$this->maxAttempts.' por parte de: '.$request->email);
-            $this->fireLockoutEvent($request);
-            return response()->json([
-                'Se ha rebasado el número de intentos' => $this->maxAttempts(),
-                'Intento actual' => $this->limiter()->hit($this->throttleKey($request)),
-                'Tiempo de espera para próximo intento' => $this->decayMinutes().' minutos',
-                'Intentando accesar desde el correo' => $request->email,
-            ],429);
-        }
+        // if ($this->hasTooManyLoginAttempts($request)) {
+        //     Log::alert('Se ha alcanzado el límite de intentos máximos que son: '.$this->maxAttempts.' por parte de: '.$request->email);
+        //     $this->fireLockoutEvent($request);
+        //     return response()->json([
+        //         'Se ha rebasado el número de intentos' => $this->maxAttempts(),
+        //         'Intento actual' => $this->limiter()->hit($this->throttleKey($request)),
+        //         'Tiempo de espera para próximo intento' => $this->decayMinutes().' minutos',
+        //         'Intentando accesar desde el correo' => $request->email,
+        //     ],429);
+        // }
+        if (method_exists($this, 'hasTooManyLoginAttempts') &&
+        $this->hasTooManyLoginAttempts($request)) {
+        $this->fireLockoutEvent($request);
+
+        return $this->sendLockoutResponse($request);
+    }
+
+        // if (method_exists($this, 'hasTooManyLoginAttempts') &&
+        //     $this->hasTooManyLoginAttempts($request)) {
+        //     Log::alert('Se ha alcanzado el límite de intentos máximos que son: '.$this->maxAttempts.' por parte de: '.$request->email);
+
+        //     $this->fireLockoutEvent($request);
+
+        //     return response()->json([
+        //         'Se ha rebasado el número de intentos' => $this->maxAttempts(),
+        //         'Intento actual' => $this->limiter()->hit($this->throttleKey($request)),
+        //         'Tiempo de espera para próximo intento' => $this->decayMinutes().' minutos',
+        //         'Intentando accesar desde el correo' => $request->email,
+        //     ],429);
+        // }
 
         $credentials = $request->only('email', 'password');
 
@@ -37,8 +56,8 @@ class PassportController extends Controller
         ]);
 
         if ($validator->fails()) {
-            Log::channel('single')->info('Datos incorrectos por parte de: '.$request->email. ' contraseña: '.$request->password);
-
+            Log::channel('single')->info('Datos incorrectos por parte de: '.$request->email);
+            $this->incrementLoginAttempts($request);
             return response()->json([
                 'message' => 'Por favor, llenar los campos correctamente',
                 'errors' => $validator->errors()
@@ -62,11 +81,12 @@ class PassportController extends Controller
 
             return response()->json(['success' => true, 'token' => $token],
             200);
-        } else
+        } else{
             Log::channel('single')->info('Datos incorrectos por parte de '.$request->email);
-
+            $this->incrementLoginAttempts($request);
             return response()->json(['res' => false, 'message' => "Usuario o contraseña incorrectos"],
             404);
+        }
     }
 
     public function logout(){

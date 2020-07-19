@@ -5,6 +5,7 @@ namespace App\Listeners;
 use Laravel\Passport\Events\AccessTokenCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use App\User;
 
 class SuccessfulLogin
 {
@@ -26,9 +27,16 @@ class SuccessfulLogin
      */
     public function handle(AccessTokenCreated $event)
     {
-        $timeDate = new \DateTime ;
+        $timeDate = new \DateTime();
+        if(!empty($event->userId)){
+            $user = User::find($event->userId);
+            $user->last_login = $timeDate;
+            $user->save();
+        }
+
+        //var_dump($timeDate);
         // print("TIEMPO ACTUAL "+$timeDate);
-        $event->user->last_login = $timeDate;
-        $event->user->save();
+        $user->last_login = $timeDate;
+        $user->save();
     }
 }
