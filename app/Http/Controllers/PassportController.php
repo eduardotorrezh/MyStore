@@ -42,7 +42,7 @@ class PassportController extends Controller
 
         if ($validator->fails()) {
             $this->incrementLoginAttempts($request);
-            Log::channel('single')->info('Datos incorrectos por parte de: '.$request->email. ' contraseña: '.$request->password);
+            Log::channel('single')->info('Datos incorrectos por parte de: '.$request->email);
 
             return response()->json([
                 'message' => 'Por favor, llenar los campos correctamente',
