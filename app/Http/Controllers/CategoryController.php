@@ -153,4 +153,22 @@ class CategoryController extends Controller
         Category::destroy($id);
         return 'Borrado';
     }
+
+
+    public function products_by_category($id){
+       $category= Category::find($id);
+        
+        if(!$category){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        return $category->products()->get();
+    }
+
+
+    public function prod_by_categories(){
+        return Category::with('products')->get();
+    }
 }

@@ -35,7 +35,8 @@ Route::group(['middleware'=>'auth:api'], function(){
 
     #Categorias
     Route::ApiResource('categories', 'CategoryController',['only' => ['store','update','destroy']]);
-    
+  
+
     #Productos
     Route::ApiResource('products', 'ProductController',['only' => ['store','update','destroy']]);
    
@@ -56,10 +57,15 @@ Route::group(['middleware'=>'auth:api'], function(){
 
     //BuyAndSells
     Route::get("all-payments","BuyAndSellController@index");
+
+    
+    
 });
 
 #Categorias GET
 Route::ApiResource('categories', 'CategoryController',['only' => ['index', 'show']]);
+Route::get("prod_by_category/{id}","CategoryController@products_by_category");
+Route::get("prod_by_categories","CategoryController@prod_by_categories");
 #Productos GET
 Route::ApiResource('products', 'ProductCon  troller',['only' => ['index','show']]);
 
