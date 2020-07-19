@@ -34,7 +34,8 @@ class BuyAndSellController extends Controller
 
     public function byUser(Request $request)
     {
-        return BuyAndSell::all();
+        $A = BuyAndSell::where('user_id','=', $request->user_id)->get();
+        return $A;
     }
 }
     
