@@ -17,6 +17,25 @@ class UsersController extends Controller
      */
     public function index()
     {
+        $user = Auth::user();      
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $name_rol = $user->rol()->first()->name;
+        
+
+        if($name_rol != 'Admin'){
+            return response()->json([
+                'message' => 'No tienes acceso a este modulo'
+            ],404);
+        }
+
+
         $users = User::latest()->orderBy('id')->get(); //->paginate(7); if you want the pagination functionality
         return $users;
     }
@@ -30,21 +49,33 @@ class UsersController extends Controller
      */
     public function show(Request $request)
     {
-        $user = User::where('status','=',true)->where('id','=',$request->id)->first();
-        
+        $user = Auth::user();      
 
         if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],401);
+        }
+
+        $status = $user->status;
+
+        if(!$status){
             return response()->json([
                 'message' => 'No se encontro usuario o ha sido eliminado'
             ],404);
         }
-        $inf = InfoUser::where('user_id','=',$request->id)->first();
+
+
+        $inf = InfoUser::where('user_id','=',$user->id)->first();
+        $rol = $user->rol()->first();
         // return $user;
          return response()->json([
              'name'=>$user->name,
              'last_name'=>$user->last_name,
              'email'=>$user->email,
              'last_login'=>$user->last_login,
+             'rol_id'=>$user->rol_id,
+             'rol'=>$rol->name,
              'birthday'=>$inf->birthday,
              'genre'=>$inf->genre,
              'phone'=>$inf->phone
@@ -58,7 +89,7 @@ class UsersController extends Controller
         if(!$user){
             return response()->json([
                 'message' => 'No se encontro usuario logeado'
-            ],404);
+            ],401);
         }
 
         $status = $user->status;
@@ -69,9 +100,20 @@ class UsersController extends Controller
             ],404);
         }
 
-        
+        $inf = InfoUser::where('user_id','=',$user->id)->first();
+        $rol = $user->rol()->first();
+        // return $user;
         return response()->json([
-            $user
+             'name'=>$user->name,
+             'last_name'=>$user->last_name,
+             'email'=>$user->email,
+             'last_login'=>$user->last_login,
+             'rol_id'=>$user->rol_id,
+             'rol'=>$rol->name,
+             'birthday'=>$inf->birthday,
+             'genre'=>$inf->genre,
+             'phone'=>$inf->phone
+             
         ],200);
     }
 
@@ -82,9 +124,18 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $user = User::findOrFail($id);
+        $user = Auth::user();      
+        $status = $user->status;
+        $id = $user->id;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -114,10 +165,32 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        $user = Auth::user();      
+        $status = $user->status;
+       
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $name_rol = $user->rol()->first()->name;
+
+        if($name_rol != 'Admin'){
+            $id = $user->id;
+        }      
+
         $asd = [
             'status' => false,
         ];
         $user = User::where('id','=', $id)->update($asd);
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario'
+            ],404);
+        }
         $user = User::where('id','=', $id)->get();
         // $user = User::findOrFail($id);
         // $user->update([

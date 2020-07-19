@@ -5,13 +5,30 @@ use App\ProductsInShoppingCart;
 use App\ShoppingCart;
 use App\BuyAndSell;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShoppingCartController extends Controller
 {
     
     public function show(Request $request)
     {
-        $user_id =  $request->user_id;
+        $user = Auth::user();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],401);
+        }
+
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $user_id =  $user->id;
         $order = ShoppingCart::where('user_id','=', $user_id)->where('status', 1)->first();
         $prods = ProductsInShoppingCart::where('shopping_cart_id','=', $order->id)->get();
         return $prods;
@@ -19,7 +36,23 @@ class ShoppingCartController extends Controller
 
     public function pay_sc(Request $request)
     {
-        $user_id =  $request->user_id;
+        $user = Auth::user();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],401);
+        }
+
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $user_id =  $user->id;
 
         $order = ShoppingCart::where('user_id','=', $user_id)->where('status', 1)->first();
         $prods = ProductsInShoppingCart::where('shopping_cart_id','=', $order->id)->get();

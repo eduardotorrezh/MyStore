@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -35,6 +36,24 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();   
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $name_rol = $user->rol()->first()->name;
+        
+
+        if($name_rol == 'Client'){
+            return response()->json([
+                'message' => 'No tienes acceso a este modulo'
+            ],404);
+        }
+
         $product = [
             'name' => $request->name,
             'price' => $request->price,
@@ -91,7 +110,33 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = Auth::user();   
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $name_rol = $user->rol()->first()->name;
+        
+        
+
+        if($name_rol == 'Client'){
+            return response()->json([
+                'message' => 'No tienes acceso a este modulo'
+            ],404);
+        }
+
         $product =  Product::find($id);
+
+        if(!$product){
+            return response()->json([
+                'message' => 'Lo sentimos, no se encontro el producto'
+            ],404);
+        }
+
         $product -> name = $request -> name;
         $product -> price = $request -> price;
         $product -> discount = $request -> discount;
@@ -116,6 +161,24 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        $user = Auth::user();   
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $name_rol = $user->rol()->first()->name;
+        
+
+        if($name_rol == 'Client'){
+            return response()->json([
+                'message' => 'No tienes acceso a este modulo'
+            ],404);
+        }
+
         Product::destroy($id);
         return 'Borrado';
     }
