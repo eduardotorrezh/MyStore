@@ -33,10 +33,5 @@ class SuccessfulLogin
             $user->last_login = $timeDate;
             $user->save();
         }
-
-        //var_dump($timeDate);
-        // print("TIEMPO ACTUAL "+$timeDate);
-        $user->last_login = $timeDate;
-        $user->save();
     }
 }
