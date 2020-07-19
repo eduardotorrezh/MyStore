@@ -39,9 +39,9 @@ class ShoppingCartController extends Controller
 
             if(ShoppingCart::where('id','=', $order->id)->update($stat)){
                 $nsc = [ "user_id"=> $user_id, "status"=>true];
-                ShoppingCart::create($nsc);
+                $DSA = ShoppingCart::create($nsc);
                 $ret = [
-                    "new_sc"=>$nsc,
+                    "new_sc"=>$DSA,
                     "pay"=>$pay,
                     "message"=>"Carrito ha pasado a pagados. "
                 ];

@@ -62,3 +62,4 @@ Route::resource('products', 'ProductController',['only' => ['index', 'store','sh
 
 //BuyAndSells
 Route::get("all-payments","BuyAndSellController@index");
+Route::post("user-payments","BuyAndSellController@byUser");
