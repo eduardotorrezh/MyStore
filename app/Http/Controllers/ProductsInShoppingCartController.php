@@ -58,9 +58,13 @@ class ProductsInShoppingCartController extends Controller
             'subtotal'=>$subtotal
         ];
         if(ProductsInShoppingCart::create($psc)){
-            return 200;
+            return response()->json([
+                'message' => 'Producto agregado exitosamente'
+            ],200);
         }else{
-            return 'Algo no ha salido bien';
+            return response()->json([
+                'message' => 'Ha ocurrido un problema'
+            ],404);
         }
         
         
@@ -96,9 +100,13 @@ class ProductsInShoppingCartController extends Controller
             $pisc->quantity = $request->quantity;
             $pisc->subtotal = $request->quantity * $pr->final_price;
             if($pisc->save()){
-                return 200;
+                return response()->json([
+                    'message' => 'Producto actualizado exitosamente'
+                ],200);
             }else{
-                return "Algo salió mal";
+                return response()->json([
+                    'message' => 'Ha ocurrido un problema'
+                ],404);
             }
         }
     }
@@ -128,9 +136,13 @@ class ProductsInShoppingCartController extends Controller
         
         if(ProductsInShoppingCart::where('shopping_cart_id', $sc_id)
         ->where('product_id', $prod_id)->delete()){
-            return 200;
+            return response()->json([
+                'message' => 'Producto eliminado exitosamente'
+            ],200);
         }else{
-            return 'Algo salió mal';
+            return response()->json([
+                'message' => 'Ha ocurrido un problema'
+            ],404);
         }
 
 

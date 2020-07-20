@@ -82,7 +82,10 @@ class ShoppingCartController extends Controller
             }
         }
         
-        return "Algo salió mal";
+        return response()->json([
+            'message' => 'Ha ocurrido un problema'
+        ],404);
+    
         
     }
 

@@ -29,10 +29,14 @@ class ProductsInWishListController extends Controller
             'wish_list_id' => $wl_id
         ];
             if(ProductsInWishList::create($pw)){
-                return 200;
+                return response()->json([
+                    'message' => 'Producto agregado exitosamente'
+                ],200);
             }else{
-                return 'Algo salió mal';
-            }       
+                return response()->json([
+                    'message' => 'Ha ocurrido un problema'
+                ],404);
+            }
     }
 
     public function destroy(Request $request)
@@ -53,9 +57,13 @@ class ProductsInWishListController extends Controller
         
         if(ProductsInWishList::where('wish_list_id', $wl_id)
         ->where('product_id', $prod_id)->delete()){
-            return 200;
+            return response()->json([
+                'message' => 'Producto eliminado exitosamente'
+            ],200);
         }else{
-            return 'Algo salió mal';
+            return response()->json([
+                'message' => 'Ha ocurrido un problema'
+            ],404);
         }
     }
 }
