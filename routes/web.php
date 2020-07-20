@@ -67,7 +67,7 @@ Route::ApiResource('categories', 'CategoryController',['only' => ['index', 'show
 Route::get("prod_by_category/{id}","CategoryController@products_by_category");
 Route::get("prod_by_categories","CategoryController@prod_by_categories");
 #Productos GET
-Route::ApiResource('products', 'ProductCon  troller',['only' => ['index','show']]);
+Route::ApiResource('products', 'ProductController',['only' => ['index','show']]);
 
 //BuyAndSells
 Route::get("all-payments","BuyAndSellController@index");
