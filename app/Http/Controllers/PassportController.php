@@ -11,8 +11,6 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class PassportController extends Controller
 {
-
-    use ThrottlesLogins;
     use AuthenticatesUsers;
     public $maxAttempts=3;
     public $decayMinutes=2;
