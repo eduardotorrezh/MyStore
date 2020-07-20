@@ -66,9 +66,14 @@ class ProductController extends Controller
             'category_id' => $request->category_id,
         ];
         if(Product::create($product)){
-            return 200;
+            return response()->json([
+                'message' => 'Producto creado exitosamente',
+                'product' => $product
+            ],200);
         }else{
-            return 'algo salió mal';
+            return response()->json([
+                'message' => 'Ha ocurrido un problema'
+            ],404);
         }
     }
 
@@ -147,9 +152,14 @@ class ProductController extends Controller
         $product -> slug = $request -> slug;
         $product -> category_id = $request -> category_id;
         if($product->save()){
-            return 200;
+            return response()->json([
+                'message' => 'Producto actualizado exitosamente',
+                'product' => $product
+            ],200);
         }else{
-            return 'Algo salió mal';
+            return response()->json([
+                'message' => 'Ha ocurrido un problema'
+            ],404);
         }
     }
 
@@ -179,7 +189,14 @@ class ProductController extends Controller
             ],404);
         }
 
-        Product::destroy($id);
-        return 'Borrado';
+        if(Product::destroy($id)){
+            return response()->json([
+                'message' => 'Producto eliminado exitosamente',
+            ],200);
+        }else{
+            return response()->json([
+                'message' => 'Ha ocurrido un problema'
+            ],404);
+        }
     }
 }

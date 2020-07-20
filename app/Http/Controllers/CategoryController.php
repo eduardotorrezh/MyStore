@@ -57,10 +57,16 @@ class CategoryController extends Controller
         $category = [
             'name' => $request->name,
         ];
+
         if(Category::create($category)){
-            return 200;
+            return response()->json([
+                'message' => 'Categoria creada exitosamente',
+                'category'=> $category
+            ],200);
         }else{
-            return 'algo salió mal';
+            return response()->json([
+                'message' => 'Ha ocurrido un problema'
+            ],404);
         }
     }
 
@@ -116,10 +122,16 @@ class CategoryController extends Controller
     
         $category =  Category::find($id);
         $category -> name = $request -> name;
+        
         if($category->save()){
-            return 200;
+            return response()->json([
+                'message' => 'Categoria actualizada exitosamente',
+                'category'=> $category
+            ],200);
         }else{
-            return 'Algo salió mal';
+            return response()->json([
+                'message' => 'Ha ocurrido un problema'
+            ],404);
         }
     }
 
@@ -150,8 +162,15 @@ class CategoryController extends Controller
         }
 
         #Falta retornar excepciones
-        Category::destroy($id);
-        return 'Borrado';
+        if(Category::destroy($id)){
+            return response()->json([
+                'message' => 'Categoria eliminada exitosamente'
+            ],200);
+        }else{
+            return response()->json([
+                'message' => 'No se pudo eliminar la categoria'
+            ],404);
+        }
     }
 
 
@@ -160,7 +179,7 @@ class CategoryController extends Controller
         
         if(!$category){
             return response()->json([
-                'message' => 'No se encontro usuario o ha sido eliminado'
+                'message' => 'No se pudo encontrar la categoria'
             ],404);
         }
 

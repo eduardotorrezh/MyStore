@@ -191,12 +191,9 @@ class UsersController extends Controller
                 'message' => 'No se encontro usuario'
             ],404);
         }
-        $user = User::where('id','=', $id)->get();
-        // $user = User::findOrFail($id);
-        // $user->update([
-        //     'status' => false,
-        // ]);
 
-        return $user;
+        return response()->json([
+            'message' => 'Usuario eliminado con exito'
+        ],200);
     }
 }
