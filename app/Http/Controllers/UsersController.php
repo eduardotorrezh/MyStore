@@ -26,15 +26,13 @@ class UsersController extends Controller
             ],404);
         }
 
-        $name_rol = $user->rol()->first()->name;
-        
+        $name_rol = $user->rol()->first()->name;    
 
         if($name_rol != 'Admin'){
             return response()->json([
                 'message' => 'No tienes acceso a este modulo'
             ],404);
         }
-
 
         $users = User::latest()->orderBy('id')->get(); //->paginate(7); if you want the pagination functionality
         return $users;
