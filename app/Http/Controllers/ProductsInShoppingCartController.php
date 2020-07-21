@@ -44,30 +44,37 @@ class ProductsInShoppingCartController extends Controller
         $user_id =  $user->id;
         $order = ShoppingCart::where('user_id','=', $user_id)->get();
         $sc_id = $order[0]->id;
-        $prod = Product::find($request->product_id);
-        $subtotal;
-        if($request->quantity>1){
-            $subtotal = $prod->final_price * $request->quantity;
+        
+        $test = ProductsInShoppingCart::where('shopping_cart_id','=', $sc_id)->where('product_id',$request->product_id)->get();
+        
+        if(count($test) == 0){
+            $prod = Product::find($request->product_id);
+            $subtotal;
+            if($request->quantity>1){
+                $subtotal = $prod->final_price * $request->quantity;
+            }else{
+                $subtotal = $prod->final_price; 
+            }
+            $psc = [
+                'product_id'=> $request->product_id,
+                'shopping_cart_id'=>$sc_id,
+                'quantity'=>$request->quantity,
+                'subtotal'=>$subtotal
+            ];
+            if(ProductsInShoppingCart::create($psc)){
+                return response()->json([
+                    'message' => 'Producto agregado exitosamente'
+                ],200);
+            }else{
+                return response()->json([
+                    'message' => 'Ha ocurrido un problema'
+                ],404);
+            }    
         }else{
-            $subtotal = $prod->final_price; 
-        }
-        $psc = [
-            'product_id'=> $request->product_id,
-            'shopping_cart_id'=>$sc_id,
-            'quantity'=>$request->quantity,
-            'subtotal'=>$subtotal
-        ];
-        if(ProductsInShoppingCart::create($psc)){
             return response()->json([
-                'message' => 'Producto agregado exitosamente'
-            ],200);
-        }else{
-            return response()->json([
-                'message' => 'Ha ocurrido un problema'
+                'message' => 'El producto está repetido'
             ],404);
         }
-        
-        
     }
 
     public function update(Request $request)
@@ -144,7 +151,5 @@ class ProductsInShoppingCartController extends Controller
                 'message' => 'Ha ocurrido un problema'
             ],404);
         }
-
-
     }
 }
