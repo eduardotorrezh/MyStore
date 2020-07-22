@@ -19,8 +19,12 @@ Route::get('/', function () {
 Route::get('/home', 'HomeController@index')->name('home');
 
 //Cosas referentes al usuario
-Auth::routes(['login'=>false,'logout'=>false]); //Register
+Auth::routes(['login'=>false,'logout'=>false,'verify' => true]); //Register and verified emails
 Route::post('login', 'PassportController@login');
+
+
+//Send Emails
+Route::get('enviar','UsersController@password_recovery');
 
 //TOKENS PASSPORT
 Route::group(['middleware'=>'auth:api'], function(){
@@ -57,6 +61,7 @@ Route::group(['middleware'=>'auth:api'], function(){
 
     //BuyAndSells
     Route::get("all-payments","BuyAndSellController@index");
+
 
     
     

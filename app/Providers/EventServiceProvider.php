@@ -20,6 +20,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         'Laravel\Passport\Events\AccessTokenCreated' => [
             'App\Listeners\SuccessfulLogin',
+            'App\Listeners\LogVerifiedUser',
         ],
     ];
 

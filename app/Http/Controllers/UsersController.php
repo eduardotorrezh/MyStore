@@ -7,6 +7,7 @@ use App\User;
 use App\InfoUser;
 use App\Http\Resources\UsersViewCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -193,5 +194,24 @@ class UsersController extends Controller
         return response()->json([
             'message' => 'Usuario eliminado con exito'
         ],200);
+    }
+
+    public function password_recovery(){
+      //  $user = Auth::user();      
+        $this->user = User::find(2);
+        $status =  $this->user->status;
+        $id = $this->user->id;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+        
+        Mail::send('emails',[],function($message){
+            $message->from('mystorebusiness9@gmail.com','My Store');
+            $message->to($this->user->email)->subject('Bienvenid@ a My Store');
+        });
+
     }
 }
