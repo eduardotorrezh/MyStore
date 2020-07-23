@@ -23,8 +23,7 @@ Auth::routes(['login'=>false,'logout'=>false,'verify' => true]); //Register and 
 Route::post('login', 'PassportController@login');
 
 
-//Send Emails
-Route::get('enviar','UsersController@password_recovery');
+
 
 //TOKENS PASSPORT
 Route::group(['middleware'=>'auth:api'], function(){
@@ -62,6 +61,8 @@ Route::group(['middleware'=>'auth:api'], function(){
     //BuyAndSells
     Route::get("all-payments","BuyAndSellController@index");
 
+    //Send Emails
+    Route::get('password_recovery','UsersController@password_recovery');
 
     
     
