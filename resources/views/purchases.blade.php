@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Aviso de Bienvenida</title>
+    <title>Aviso de Compra</title>
     <style>
       /* -------------------------------------
           GLOBAL RESETS
@@ -350,9 +350,7 @@
                     <tr>
                       <td>
                         <p>Hola, {{$data['name']}}</p>
-                        <p>Muchas gracias por haber elegido My Store.</p>
-                        <p>My Store te la bienvenida y esperamos que el servicio de My Store en sus compras en linea desde nuestra aplicación sea de su agrado.</p>
-                        <p>¡Buena suerte ! {{$data['name']}}, esperamos seguir trabajando juntos.</p>
+                        <p>En buena hora, su compra ha sido procesada.</p>
                       </td>
                     </tr>
                   </table>
