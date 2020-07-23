@@ -197,10 +197,8 @@ class UsersController extends Controller
     }
 
     public function password_recovery(){
-      //  $user = Auth::user();      
-        $this->user = User::find(2);
-        $status =  $this->user->status;
-        $id = $this->user->id;
+        $user = Auth::user();              
+        $status =  $user->status;
 
         if(!$status){
             return response()->json([
@@ -208,9 +206,9 @@ class UsersController extends Controller
             ],404);
         }
         
-        Mail::send('emails',[],function($message){
+        Mail::send('password_recovery',['user' => $user,'pwd' => $user->getAuthPassword()],function($message) use ($user){
             $message->from('mystorebusiness9@gmail.com','My Store');
-            $message->to($this->user->email)->subject('Bienvenid@ a My Store');
+            $message->to($user->email)->subject('Recuperación de contraseña');
         });
 
     }
