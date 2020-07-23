@@ -48,7 +48,7 @@ class PassportController extends Controller
         }
 
         $user = User::whereEmail($request->email)->first();
-        if (!is_null($user) && Hash::check($request->password, $user->password)) {
+        if (!is_null($user) && $request->password == decrypt($user->password)) {
             $status = $user->status;
 
             if(!$status){

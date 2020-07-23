@@ -7,6 +7,7 @@ use App\User;
 use App\InfoUser;
 use App\Http\Resources\UsersViewCollection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -193,5 +194,36 @@ class UsersController extends Controller
         return response()->json([
             'message' => 'Usuario eliminado con exito'
         ],200);
+    }
+
+    public function password_recovery(Request $request){
+
+        $email = $request->email;
+
+        if(!$email){
+            return response()->json([
+                'message' => 'No se encontro email'
+            ],404);
+        }
+
+        $user = User::whereEmail($email)->first();
+
+        if($user){
+            try{
+                Mail::send('password_recovery',['user' => $user,'pwd' => decrypt($user->password)],function($message) use ($email){
+                    $message->from('mystorebusiness9@gmail.com','My Store');
+                    $message->to($email)->subject('Recuperación de contraseña');
+                });
+            }catch(Exception $ex){
+                return response()->json([
+                    'message' => 'No se pudo realizar el envio'
+                ],404);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Si existe este correo registrado, le llegara un correo de aviso de recuperación de contraseña'
+        ],200); 
+
     }
 }

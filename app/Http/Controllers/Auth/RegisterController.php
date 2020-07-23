@@ -11,6 +11,7 @@ use App\ShoppingCart;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class RegisterController extends Controller
 {
@@ -67,12 +68,24 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        try{
+            Mail::send('emails',['data' => $data],function($message) use ($data){
+                $message->from('mystorebusiness9@gmail.com','My Store');
+                $message->to($data['email'])->subject('Aviso de Bienvenida');
+            });
+        }catch(Exception $ex){
+            return response()->json([
+                'message' => 'No se pudo realizar el envio'
+            ],404);
+        }
+
         $user=[
             'name' => $data['name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'rol_id' => $data['rol_id'],
-            'password' => Hash::make($data['password']),
+            'password' => encrypt($data['password']),
         ];
         if($us=User::create($user) ){
             $user_info=[
@@ -94,7 +107,6 @@ class RegisterController extends Controller
                 }
             }else{
                 User::destroy($us->id);
-                //Aquí tengo que borrar el que se acaba de crear y no pude crear info, para que pueda volver a crear con el mismo email
             }
         }
 

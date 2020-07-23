@@ -1,14 +1,2 @@
 *.sqlite
 *.sqlite-journal
-vendor/ 
-node_modules/ 
-npm-debug.log 
-public/storage 
-public/hot 
-storage/*.key 
-.env
-/vendor
-.env
-/public/.htaccess
-/storage
-storage/*.key
