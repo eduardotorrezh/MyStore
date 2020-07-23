@@ -22,6 +22,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes(['login'=>false,'logout'=>false,'verify' => true]); //Register and verified emails
 Route::post('login', 'PassportController@login');
 
+ //Send Emails
+ Route::get('password_recovery','UsersController@password_recovery');
 
 
 
@@ -59,12 +61,7 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::post('pay-sc','ShoppingCartController@pay_sc');
 
     //BuyAndSells
-    Route::get("all-payments","BuyAndSellController@index");
-
-    //Send Emails
-    Route::get('password_recovery','UsersController@password_recovery');
-
-    
+    Route::get("all-payments","BuyAndSellController@index");   
     
 });
 

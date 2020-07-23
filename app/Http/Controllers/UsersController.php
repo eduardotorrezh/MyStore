@@ -196,20 +196,34 @@ class UsersController extends Controller
         ],200);
     }
 
-    public function password_recovery(){
-        $user = Auth::user();              
-        $status =  $user->status;
+    public function password_recovery(Request $request){
 
-        if(!$status){
+        $email = $request->email;
+
+        if(!$email){
             return response()->json([
-                'message' => 'No se encontro usuario o ha sido eliminado'
+                'message' => 'No se encontro email'
             ],404);
         }
-        
-        Mail::send('password_recovery',['user' => $user,'pwd' => $user->getAuthPassword()],function($message) use ($user){
-            $message->from('mystorebusiness9@gmail.com','My Store');
-            $message->to($user->email)->subject('Recuperación de contraseña');
-        });
+
+        $user = User::whereEmail($email)->first();
+
+        if($user){
+            try{
+                Mail::send('password_recovery',['user' => $user,'pwd' => decrypt($user->password)],function($message) use ($email){
+                    $message->from('mystorebusiness9@gmail.com','My Store');
+                    $message->to($email)->subject('Recuperación de contraseña');
+                });
+            }catch(Exception $ex){
+                return response()->json([
+                    'message' => 'No se pudo realizar el envio'
+                ],404);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Si existe este correo registrado, le llegara un correo de aviso de recuperación de contraseña'
+        ],200); 
 
     }
 }
