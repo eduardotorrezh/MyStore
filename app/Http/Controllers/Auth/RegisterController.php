@@ -85,7 +85,7 @@ class RegisterController extends Controller
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'rol_id' => $data['rol_id'],
-            'password' => Hash::make($data['password']),
+            'password' => encrypt($data['password']),
         ];
         if($us=User::create($user) ){
             $user_info=[
@@ -107,7 +107,6 @@ class RegisterController extends Controller
                 }
             }else{
                 User::destroy($us->id);
-                //Aquí tengo que borrar el que se acaba de crear y no pude crear info, para que pueda volver a crear con el mismo email
             }
         }
 
