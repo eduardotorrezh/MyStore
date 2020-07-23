@@ -57,9 +57,9 @@ class ProductsInShoppingCartController extends Controller
             }
             $psc = [
                 'product_id'=> $request->product_id,
-                'shopping_cart_id'=>$sc_id,
-                'quantity'=>$request->quantity,
-                'subtotal'=>$subtotal
+                'shopping_cart_id' => $sc_id,
+                'quantity' => $request->quantity,
+                'subtotal' => $subtotal
             ];
             if(ProductsInShoppingCart::create($psc)){
                 return response()->json([
