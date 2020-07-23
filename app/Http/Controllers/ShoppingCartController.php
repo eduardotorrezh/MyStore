@@ -6,6 +6,7 @@ use App\ShoppingCart;
 use App\BuyAndSell;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ShoppingCartController extends Controller
 {
@@ -69,6 +70,17 @@ class ShoppingCartController extends Controller
         $stat = ["status"=>false];
         if(BuyAndSell::create($pay)){
             $asc = ShoppingCart::find($order->id);
+
+            try{
+                Mail::send('purchases',['user' => $user],function($message) use ($user){
+                    $message->from('mystorebusiness9@gmail.com','My Store');
+                    $message->to($user->email)->subject('Aviso de compra');
+                });
+            }catch(Exception $ex){
+                return response()->json([
+                    'message' => 'No se pudo realizar el envio'
+                ],404);
+            }
 
             if(ShoppingCart::where('id','=', $order->id)->update($stat)){
                 $nsc = [ "user_id"=> $user_id, "status"=>true];
