@@ -333,7 +333,6 @@
     </style>
   </head>
   <body class="">
-    <span class="preheader">This is preheader text. Some clients will show this text as a preview.</span>
     <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body">
       <tr>
         <td>&nbsp;</td>
@@ -349,7 +348,7 @@
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <p>Hola, {{$data['name']}}</p>
+                        <p>Hola, {{$user->name}}</p>
                         <p>En buena hora, su compra ha sido procesada.</p>
                       </td>
                     </tr>
