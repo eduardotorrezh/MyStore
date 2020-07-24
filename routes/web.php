@@ -23,7 +23,7 @@ Auth::routes(['login'=>false,'logout'=>false,'verify' => true]); //Register and 
 Route::post('login', 'PassportController@login');
 
  //Send Emails
- Route::get('password_recovery','UsersController@password_recovery');
+ Route::post('password_recovery','UsersController@password_recovery');
 
 
 
