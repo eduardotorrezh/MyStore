@@ -33,6 +33,7 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::get('auth_user','UsersController@auth_user');
     Route::post('logout', 'PassportController@logout'); //elimina todos los tokens
     Route::resource('user-config', 'UsersController',['only' => ['index', 'destroy','update']]); /* Falta borrar el intento cuando no se tiene toda la user info  */
+    Route::post('change-password','UsersController@changePassword');
     Route::get('user-inf','UsersController@show');
 
     #Direcciones
@@ -62,7 +63,7 @@ Route::group(['middleware'=>'auth:api'], function(){
 
     //BuyAndSells
     Route::get("all-payments","BuyAndSellController@index");   
-    
+    Route::post("user-payments","BuyAndSellController@byUserCurr");
 });
 
 #Categorias GET
@@ -73,5 +74,5 @@ Route::get("prod_by_categories","CategoryController@prod_by_categories");
 Route::ApiResource('products', 'ProductController',['only' => ['index','show']]);
 
 //BuyAndSells
-Route::get("all-payments","BuyAndSellController@index");
-Route::post("user-payments","BuyAndSellController@byUser");
+//Route::get("all-payments","BuyAndSellController@index");
+//Route::post("user-payments","BuyAndSellController@byUser");

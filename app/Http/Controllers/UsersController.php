@@ -116,6 +116,35 @@ class UsersController extends Controller
         ],200);
     }
 
+
+
+    protected function changePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],401);
+        }
+
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $user->password = $request->password;
+        if($user->save()){
+            return response()->json([
+                'message' => 'Contraseña cambiada correctamente'
+            ],200);
+        }
+    }
+
+
     /**
      * Update the specified resource in storage.
      *

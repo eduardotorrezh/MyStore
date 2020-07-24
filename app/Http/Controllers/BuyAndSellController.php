@@ -32,9 +32,17 @@ class BuyAndSellController extends Controller
         return BuyAndSell::all();
     }
 
-    public function byUser(Request $request)
+    public function byUserCurr(Request $request)
     {
-        $A = BuyAndSell::where('user_id','=', $request->user_id)->get();
+        $user = Auth::user();  
+        $status = $user->status;
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+
+        $A = BuyAndSell::where('user_id','=', $user->user_id)->get();
         return $A;
     }
 }
