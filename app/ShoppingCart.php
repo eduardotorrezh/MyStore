@@ -14,4 +14,8 @@ class ShoppingCart extends Model
     public function user(){
         return $this->belongsTo('App\User');
     }
+
+    public function productsInSC(){
+        return $this->hasMany('App\ProductsInShoppingCart');
+    }
 }
