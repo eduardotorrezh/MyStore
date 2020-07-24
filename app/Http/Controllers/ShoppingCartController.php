@@ -31,7 +31,8 @@ class ShoppingCartController extends Controller
 
         $user_id =  $user->id;
         $order = ShoppingCart::where('user_id','=', $user_id)->where('status', 1)->first();
-        $prods = ProductsInShoppingCart::where('shopping_cart_id','=', $order->id)->get();
+        $prods = ProductsInShoppingCart::query()
+        ->with('product')->where('shopping_cart_id','=', $order->id)->get();
         return $prods;
     }
 
