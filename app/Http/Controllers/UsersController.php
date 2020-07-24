@@ -46,7 +46,7 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($id)
     {
         $user = Auth::user();      
 
@@ -64,6 +64,15 @@ class UsersController extends Controller
             ],404);
         }
 
+        $name_rol = $user->rol()->first()->name;
+
+        if($name_rol == 'Client'){
+            return response()->json([
+                'message' => 'No tienes acceso a este modulo'
+            ],404);
+        }
+
+        $user = User::find($id);
 
         $inf = InfoUser::where('user_id','=',$user->id)->first();
         $rol = $user->rol()->first();

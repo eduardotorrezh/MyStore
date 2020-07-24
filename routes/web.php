@@ -34,7 +34,7 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::post('logout', 'PassportController@logout'); //elimina todos los tokens
     Route::resource('user-config', 'UsersController',['only' => ['index', 'destroy','update']]); /* Falta borrar el intento cuando no se tiene toda la user info  */
     Route::post('change-password','UsersController@changePassword');
-    Route::get('user-inf','UsersController@show');
+    Route::get('user-inf/{id}','UsersController@show');
 
     #Direcciones
     Route::ApiResource('address', 'AddressController');
