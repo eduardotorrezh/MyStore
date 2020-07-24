@@ -79,11 +79,12 @@ class AddressController extends Controller
         }
 
         $address=[
-            'address' => $request->address,
-            'street1' => $request->street1,
-            'street2' =>  $request->street2,
-            'indications' =>  $request->indications,
-            'contactphone' =>  $request->contactphone,
+            'city' => $request->city,
+            'street' => $request->street,
+            'zip_code' =>  $request->zip_code,
+            'country' =>  $request->country,
+            'state' =>  $request->state,
+            'phone_number' => $request->phone_number,
             'user_id' => $user->id,
         ];
 
@@ -181,12 +182,13 @@ class AddressController extends Controller
             ],404);
         }
 
-        $address -> address = $request->address;
-        $address -> street1 = $request->street1;
-        $address -> street2 =  $request->street2;
-        $address -> indications =  $request->indications;
-        $address -> contactphone =  $request->contactphone;
-
+        $address -> city = $request->city;
+        $address -> street = $request->street;
+        $address -> zip_code =  $request->zip_code;
+        $address -> country =  $request->country;
+        $address -> state =  $request->state;
+        $address -> phone_number =  $request->phone_number;
+        
         if($address->save()){
             return response()->json([
                 'message' => 'Direccion actualizada exitosamente',

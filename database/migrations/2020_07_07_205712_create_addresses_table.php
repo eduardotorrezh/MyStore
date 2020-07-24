@@ -15,11 +15,12 @@ class CreateAddressesTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->string('address');
-            $table->string('street1');  
-            $table->string('street2');
-            $table->string('indications');
-            $table->string('contactphone');
+            $table->string('city');
+            $table->string('street');  
+            $table->string('zip_code');
+            $table->string('country');
+            $table->string('state');
+            $table->string('phone_number');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
