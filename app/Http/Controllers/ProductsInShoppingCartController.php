@@ -104,7 +104,7 @@ class ProductsInShoppingCartController extends Controller
         
         //$pisc = Product
         if($pisc->quantity != $request->quantity){
-            $pisc->quantity = $request->quantity;
+            $pisc->quantity = $request->quantity + $pisc->quantity;
             $pisc->subtotal = $request->quantity * $pr->final_price;
             if($pisc->save()){
                 return response()->json([
