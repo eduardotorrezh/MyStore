@@ -65,6 +65,8 @@ Route::group(['middleware'=>'auth:api'], function(){
     
 });
 
+
+
 #Categorias GET
 Route::ApiResource('categories', 'CategoryController',['only' => ['index', 'show']]);
 Route::get("prod_by_category/{id}","CategoryController@products_by_category");
