@@ -74,6 +74,12 @@ class UsersController extends Controller
 
         $user = User::find($id);
 
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro el usuario'
+            ],404);
+        }
+
         $inf = InfoUser::where('user_id','=',$user->id)->first();
         $rol = $user->rol()->first();
         // return $user;
