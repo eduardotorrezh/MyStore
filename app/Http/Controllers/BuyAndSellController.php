@@ -43,9 +43,9 @@ class BuyAndSellController extends Controller
                 'message' => 'No se encontro usuario o ha sido eliminado'
             ],404);
         }
-
-        $A = BuyAndSell::where('user_id','=', $user->user_id)->get();
-        return $A;
+        //return $user;
+         $A = BuyAndSell::where('user_id','=', $user->id)->get();
+         return $A;
     }
 
     public function products_by_cars($id)
