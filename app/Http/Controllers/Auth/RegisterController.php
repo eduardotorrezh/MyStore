@@ -85,7 +85,7 @@ class RegisterController extends Controller
             'last_name' => $data['last_name'],
             'email' => $data['email'],
             'rol_id' => $data['rol_id'],
-            'password' => encrypt($data['password']),
+            'password' => $data['password'],
         ];
         if($us=User::create($user) ){
             $user_info=[

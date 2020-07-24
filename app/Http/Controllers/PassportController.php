@@ -48,7 +48,11 @@ class PassportController extends Controller
         }
 
         $user = User::whereEmail($request->email)->first();
-        if (!is_null($user) && $request->password == decrypt($user->password)) {
+
+        $pwd = openssl_decrypt($user->password, 'AES-256-CBC', "xxxSecretKey1xxxxxxSecretKey1xxx");
+
+        
+        if (!is_null($user) && $request->password == $pwd) {
             $status = $user->status;
 
             if(!$status){
