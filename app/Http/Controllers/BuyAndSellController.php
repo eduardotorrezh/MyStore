@@ -82,7 +82,7 @@ class BuyAndSellController extends Controller
             if($user->email != $userShopping->email){
                 return response()->json([
                     'message' => 'No tienes acceso a este carrito'
-                ],401);
+                ],404);
             }
     
             $prods = ProductsInShoppingCart::query()
