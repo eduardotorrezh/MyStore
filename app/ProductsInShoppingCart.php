@@ -13,4 +13,8 @@ class ProductsInShoppingCart extends Model
     public function product(){
         return $this->belongsTo('App\Product');
     }
+
+    public function shopping_cart(){
+        return $this->belongsTo('App\ShoppingCart');
+    }
 }

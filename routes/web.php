@@ -62,7 +62,7 @@ Route::group(['middleware'=>'auth:api'], function(){
 
     //BuyAndSells
     Route::get("all-payments","BuyAndSellController@index");   
-    
+    Route::get("products_by_cars/{id}","BuyAndSellController@products_by_cars");
 });
 
 
