@@ -42,7 +42,7 @@ class ProductsInShoppingCartController extends Controller
         }
 
         $user_id =  $user->id;
-        $order = ShoppingCart::where('user_id','=', $user_id)->get();
+        $order = ShoppingCart::where('user_id','=', $user_id)->where('status', 1)->get();
         $sc_id = $order[0]->id;
         
         $test = ProductsInShoppingCart::where('shopping_cart_id','=', $sc_id)->where('product_id',$request->product_id)->get();

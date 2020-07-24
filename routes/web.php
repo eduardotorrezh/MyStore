@@ -65,6 +65,7 @@ Route::group(['middleware'=>'auth:api'], function(){
     Route::get("all-payments","BuyAndSellController@index");   
     Route::get("products_by_cars/{id}","BuyAndSellController@products_by_cars");
     Route::post("user-payments","BuyAndSellController@byUserCurr");
+    Route::post("paypalid","BuyAndSellController@payId");
 });
 
 

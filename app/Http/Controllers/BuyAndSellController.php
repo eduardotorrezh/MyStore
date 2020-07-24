@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\BuyAndSell;
+use App\PaypalId;
 use App\ProductsInShoppingCart;
 use App\ShoppingCart;
 use Illuminate\Http\Request;
@@ -47,6 +48,64 @@ class BuyAndSellController extends Controller
          $A = BuyAndSell::where('user_id','=', $user->id)->get();
          return $A;
     }
+
+
+    public function payId(Request $request)
+    {
+        $user = Auth::user();
+
+        if(!$user){
+            return response()->json([
+                'message' => 'No se encontro usuario logeado'
+            ],401);
+        }
+
+        $status = $user->status;
+
+        if(!$status){
+            return response()->json([
+                'message' => 'No se encontro usuario o ha sido eliminado'
+            ],404);
+        }
+        $sc = ShoppingCart::where('user_id','=', $user->id)->where('status', 1)->first();
+        $bands = BuyAndSell::where('user_id','=', $user->id)->first();
+        $stat = ["status"=>false];
+        $stat2 = ["status"=>true];
+        $paypal = [
+            'pay_id'=>$request->pay_id,
+            'sc_id'=>$sc->id,
+            'bas_id'=>$bands->id,
+        ];
+
+        if($ppid = PaypalId::create($paypal)){
+            $csc = ShoppingCart::where('user_id','=', $user->id)->where('status', 1)->get();
+            if(ShoppingCart::where('user_id','=', $user->id)->where('status', 1)->update($stat)){
+                $bandsc = BuyAndSell::where('user_id','=', $user->id)->where('status', 1)->get();
+                if(BuyAndSell::where('user_id','=', $user->id)->where('status', 1)->update($stat2)){
+                    $nsc = ["user_id"=>$user->id, "status"=>true];
+                    if(ShoppingCart::create($nsc)){
+                        return [
+                            "ppid"=>$ppid,
+                            "csc"=>$csc,
+                            "bands"=>$bandsc,
+                            "nsc"=>$nsc
+                        ];
+                    }
+                }
+            }
+        }
+
+        // if($ppid = PaypalId::create($paypal)){
+        //     if($csc =ShoppingCart::where('user_id','=', $user->id)->where('status', 1)->update($stat)){
+        //         if($bandsc =BuyAndSell::where('user_id','=', $user->id)->update($stat2)){
+
+        //         }
+        //     }
+        // }
+       
+        
+    }
+
 
     public function products_by_cars($id)
     {

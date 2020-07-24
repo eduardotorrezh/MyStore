@@ -65,10 +65,11 @@ class ShoppingCartController extends Controller
         $pay=[
             "user_id"=>$user_id,
             "sc_id"=>$order->id,
-            "status"=>true,
+            "status"=>false,
             "cart_total"=>$total_sc
         ];
-        $stat = ["status"=>false];
+        //$stat = ["status"=>false];
+
         if(BuyAndSell::create($pay)){
             $asc = ShoppingCart::find($order->id);
 
@@ -83,16 +84,22 @@ class ShoppingCartController extends Controller
                 ],404);
             }
 
-            if(ShoppingCart::where('id','=', $order->id)->update($stat)){
-                $nsc = [ "user_id"=> $user_id, "status"=>true];
-                $DSA = ShoppingCart::create($nsc);
-                $ret = [
-                    "new_sc"=>$DSA,
-                    "pay"=>$pay,
-                    "message"=>"Carrito ha pasado a pagados. "
-                ];
-                return $ret;
-            }
+            $ret = [
+                "pay"=>$pay,
+                "message"=>"Se está procesando el pago."
+            ];
+            return $ret;
+
+            // if(ShoppingCart::where('id','=', $order->id)->update($stat)){
+            //     $nsc = [ "user_id"=> $user_id, "status"=>true];
+            //     $DSA = ShoppingCart::create($nsc);
+            //     $ret = [
+            //         "new_sc"=>$DSA,
+            //         "pay"=>$pay,
+            //         "message"=>"Carrito ha pasado a pagados. "
+            //     ];
+            //     return $ret;
+            // }
         }
         
         return response()->json([
