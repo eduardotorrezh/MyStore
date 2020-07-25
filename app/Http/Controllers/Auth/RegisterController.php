@@ -68,11 +68,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-
+        $email = openssl_decrypt($data['email'], 'AES-256-CBC', "xxxSecretKey1xxxxxxSecretKey1xxx");
         try{
-            Mail::send('emails',['data' => $data],function($message) use ($data){
+            Mail::send('emails',['data' => $data],function($message) use ($email){
                 $message->from('mystorebusiness9@gmail.com','My Store');
-                $message->to($data['email'])->subject('Aviso de Bienvenida');
+                $message->to($email)->subject('Aviso de Bienvenida');
             });
         }catch(Exception $ex){
             return response()->json([

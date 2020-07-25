@@ -73,10 +73,12 @@ class ShoppingCartController extends Controller
         if(BuyAndSell::create($pay)){
             $asc = ShoppingCart::find($order->id);
 
+            $email = openssl_decrypt($user->email, 'AES-256-CBC', "xxxSecretKey1xxxxxxSecretKey1xxx");
+
             try{
-                Mail::send('purchases',['user' => $user],function($message) use ($user){
+                Mail::send('purchases',['user' => $user],function($message) use ($email){
                     $message->from('mystorebusiness9@gmail.com','My Store');
-                    $message->to($user->email)->subject('Aviso de compra');
+                    $message->to($email)->subject('Aviso de compra');
                 });
             }catch(Exception $ex){
                 return response()->json([

@@ -19,7 +19,7 @@ class PassportController extends Controller
         $credentials = $request->only('email', 'password');
 
         $validator = Validator::make($credentials, [
-            'email' => 'required|email',
+            'email' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8']
         ]);
         
@@ -49,10 +49,8 @@ class PassportController extends Controller
 
         $user = User::whereEmail($request->email)->first();
 
-        $pwd = openssl_decrypt($user->password, 'AES-256-CBC', "xxxSecretKey1xxxxxxSecretKey1xxx");
-
         
-        if (!is_null($user) && $request->password == $pwd) {
+        if (!is_null($user) && $request->password == $user->password) {
             $status = $user->status;
 
             if(!$status){
@@ -81,7 +79,7 @@ class PassportController extends Controller
         $user->tokens->each(function ($token, $key){
             $token->delete();
         });
-        Log::channel('single')->info('Usuario '.$request->email. ' cerro sesión');
+        Log::channel('single')->info('Usuario '.$user->email. ' cerro sesión');
         return response()->json(['res' => true, 'message' => "Hasta luego"],200);
     }
 
