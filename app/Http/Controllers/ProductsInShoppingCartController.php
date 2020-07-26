@@ -118,7 +118,7 @@ class ProductsInShoppingCartController extends Controller
         }
     }
   
-    public function destroy(Request $request)
+    public function destroy($id_product)
     {
         $user = Auth::user();
 
@@ -139,10 +139,8 @@ class ProductsInShoppingCartController extends Controller
         $user_id =  $user->id;
         $order = ShoppingCart::where('user_id','=', $user_id)->get();
         $sc_id = $order[0]->id;
-        $prod_id = $request->product_id;
-        
         if(ProductsInShoppingCart::where('shopping_cart_id', $sc_id)
-        ->where('product_id', $prod_id)->delete()){
+        ->where('product_id', $id_product)->delete()){
             return response()->json([
                 'message' => 'Producto eliminado exitosamente'
             ],200);

@@ -54,7 +54,7 @@ Route::group(['middleware'=>'auth:api'], function(){
 
     //Cosas referentes a la SC
     Route::post('add-to-sc','ProductsInShoppingCartController@store');
-    Route::delete('del-to-sc','ProductsInShoppingCartController@destroy');
+    Route::delete('del-to-sc/{id_product}','ProductsInShoppingCartController@destroy');
     Route::put('upt-to-sc','ProductsInShoppingCartController@update');
     Route::get('prods-of-sc','ShoppingCartController@show');
 
