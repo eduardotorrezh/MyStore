@@ -82,7 +82,7 @@ class BuyAndSellController extends Controller
             $csc = ShoppingCart::where('user_id','=', $user->id)->where('status', 1)->get();
             if(ShoppingCart::where('user_id','=', $user->id)->where('status', 1)->update($stat)){
                 $bandsc = BuyAndSell::where('user_id','=', $user->id)->where('status', 1)->get();
-                if(BuyAndSell::where('user_id','=', $user->id)->where('status', 1)->update($stat2)){
+                if(BuyAndSell::where('user_id','=', $user->id)->where('status', 0)->update($stat2)){
                     $nsc = ["user_id"=>$user->id, "status"=>true];
                     if(ShoppingCart::create($nsc)){
                         return [
@@ -98,7 +98,7 @@ class BuyAndSellController extends Controller
                     }
                 }else{
                     return response()->json([
-                        'Error' => 'Problemas al cambiar el estado del carrito'
+                        'Error' => 'Problemas al cambiar el estado de BAS'
                     ],404);
                 }
             }else{
