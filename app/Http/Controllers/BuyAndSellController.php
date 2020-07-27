@@ -32,7 +32,8 @@ class BuyAndSellController extends Controller
             ],404);
         }
 
-        return BuyAndSell::all();
+        return BuyAndSell::where('status','=', 1)->get();
+         
     }
 
     public function byUserCurr(Request $request)
@@ -90,20 +91,27 @@ class BuyAndSellController extends Controller
                             "bands"=>$bandsc,
                             "nsc"=>$nsc
                         ];
+                    }else{
+                        return response()->json([
+                            'Error' => 'Problemas al generar el carrito'
+                        ],404);
                     }
+                }else{
+                    return response()->json([
+                        'Error' => 'Problemas al cambiar el estado del carrito'
+                    ],404);
                 }
+            }else{
+                return response()->json([
+                    'Error' => 'Problemas al cambiar el estado del carrito'
+                ],404);
             }
+            
+        }else{
+            return response()->json([
+                'Error' => 'No se generó payid'
+            ],404);
         }
-
-        // if($ppid = PaypalId::create($paypal)){
-        //     if($csc =ShoppingCart::where('user_id','=', $user->id)->where('status', 1)->update($stat)){
-        //         if($bandsc =BuyAndSell::where('user_id','=', $user->id)->update($stat2)){
-
-        //         }
-        //     }
-        // }
-       
-        
     }
 
 
