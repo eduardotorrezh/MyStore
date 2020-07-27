@@ -74,6 +74,7 @@ class ShoppingCartController extends Controller
             $asc = ShoppingCart::find($order->id);
 
             $email = openssl_decrypt($user->email, 'AES-256-CBC', "xxxSecretKey1xxxxxxSecretKey1xxx");
+            //$email = $user->email;
 
             try{
                 Mail::send('purchases',['user' => $user],function($message) use ($email){
