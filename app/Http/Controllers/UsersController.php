@@ -253,7 +253,8 @@ class UsersController extends Controller
         $user = User::whereEmail($email)->first();
 
         $pwd = openssl_decrypt($user->password, 'AES-256-CBC', "xxxSecretKey1xxxxxxSecretKey1xxx");
-
+        $email = openssl_decrypt($email, 'AES-256-CBC', "xxxSecretKey1xxxxxxSecretKey1xxx");
+        
         if($user){
             try{
                 Mail::send('password_recovery',['user' => $user,'pwd' => $pwd],function($message) use ($email){
